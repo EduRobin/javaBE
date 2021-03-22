@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 @ApplicationScoped
 public class LoginManager {
-    ArrayList<UserToken> validTokens = new ArrayList<UserToken>();
+    ArrayList<UserToken> validTokens = new ArrayList<>();
 
     public boolean validate(UserToken token){
         return validTokens.stream().anyMatch(token1 -> token1.body.equals(token.body));
@@ -19,6 +19,4 @@ public class LoginManager {
         validTokens.add(temp);
         return temp;
     }
-
-
 }

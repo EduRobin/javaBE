@@ -5,8 +5,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Path("users")
@@ -35,7 +33,7 @@ public class UserResource {
 
     @GET
     @Path("{id}")
-    public Response dostanUsera(UserToken token, @PathParam("id") int id) {
+    public Response dostanUsera(@HeaderParam("token") String token, @PathParam("id") int id) {
         if (!loginManager.validate(token))
             return Response.status(401, "invalid token").build();
         return Response.ok(userManager.dostanJmenos(id)).build();
@@ -44,14 +42,15 @@ public class UserResource {
     @POST
     @Path("/register")
     public Response vytvorJmeno(User jmeno) {
+        System.out.println("wwdwdwddw");
         if (!userManager.create(jmeno))
-            return Response.status(400).build();
+            return Response.status(404).build();
         return Response.ok(jmeno).build();
     }
 
     @POST
     @Path("/login")
-    public Response checkniJmeno(User jmeno){
+    public Response checkniName(User jmeno){
         UserToken token = userManager.checkniJmenos(jmeno);
         if (token == null)
             return Response.status(404).build();
@@ -64,7 +63,7 @@ public class UserResource {
         if (!loginManager.validate(token))
             return Response.status(401).build();
         if (userManager.odstranJmenos(id)) {
-            return Response.ok("User byl odstranen ").build();
+            return Response.ok("User byl odstranen").build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
